@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: ${MYSQL_PROJECT_URL}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver

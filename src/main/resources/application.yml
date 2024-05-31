@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: project-api
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: mybatis/mappers/*.xml
