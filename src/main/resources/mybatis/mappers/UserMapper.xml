@@ -13,7 +13,8 @@
     <insert id="signUp"
             parameterType="com.tistory.project_api.dto.UserDto$SignUp">
         <selectKey keyProperty="id" resultType="string" order="BEFORE">
-            SELECT CONCAT('U', DATE_FORMAT(NOW(), '%y%m%d'), LPAD(CAST(COALESCE(MAX(CAST(SUBSTRING(id, 8) AS UNSIGNED)), 0) + 1 AS CHAR), 6, '0')) AS id
+            SELECT CONCAT('U', DATE_FORMAT(NOW(), '%y%m%d'),
+                   LPAD(CAST(COALESCE(MAX(CAST(SUBSTRING(id, 8) AS UNSIGNED)), 0) + 1 AS CHAR), 6, '0')) AS id
             FROM user
             WHERE SUBSTRING(id, 2, 6) = DATE_FORMAT(NOW(), '%y%m%d');
         </selectKey>

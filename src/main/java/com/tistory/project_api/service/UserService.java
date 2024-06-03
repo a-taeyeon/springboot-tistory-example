@@ -21,7 +21,7 @@ public class UserService {
         return result;
     }
 
-    public String SignUp(UserRequest.SignUpRequest param) {
+    public UserDto.SignUp signUp(UserRequest.SignUpRequest param) {
         UserDto.SignUp dto = UserDto.SignUp.builder()
                 .username(param.getUsername())
                 .password(param.getPassword())
@@ -30,6 +30,6 @@ public class UserService {
 
         userMapper.signUp(dto);
 
-        return dto.getId();
+        return dto;
     }
 }

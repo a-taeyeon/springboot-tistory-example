@@ -1,19 +1,18 @@
 package com.tistory.project_api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserDto {
-    @Getter
-    @Setter
-    @ToString
+    @Data
     public static class UserBase {
         private String id;
         private String username;
+        @JsonIgnore
         private String password;
         private String email;
         private String createdAt;
@@ -21,13 +20,11 @@ public class UserDto {
     }
 
 
-    @Getter
-    @Setter
-    @ToString(callSuper = true)
+    @Data
     public static class SignUp extends UserBase{
         @Builder
         public SignUp(String id,
-                    String username,
+                      String username,
                       String password,
                       String email,
                       String createdAt,

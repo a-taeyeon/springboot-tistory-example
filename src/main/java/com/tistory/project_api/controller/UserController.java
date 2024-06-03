@@ -10,14 +10,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
     private final UserService userService;
+
+    private final String EP_LIST_USER = "/list";
+    private final String EP_ADD_USER = "/signup";
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    private final String EP_LIST_USER = "/list";
-    private final String EP_ADD_USER = "/signup";
 
     @GetMapping(EP_LIST_USER)
     public List<UserDto.UserBase> getAllUsers() {
@@ -25,9 +26,8 @@ public class UserController {
     }
 
     @PostMapping(EP_ADD_USER)
-    public String addUser(@RequestBody UserRequest.SignUpRequest body) {
-        String userId = userService.SignUp(body);
-        return userId;
+    public UserDto.SignUp addUser(@RequestBody UserRequest.SignUpRequest body) {
+        return userService.signUp(body);
     }
 
 }
