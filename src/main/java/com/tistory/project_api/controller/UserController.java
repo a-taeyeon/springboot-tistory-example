@@ -1,15 +1,14 @@
 package com.tistory.project_api.controller;
 
+import com.tistory.project_api.controller.request.UserRequest;
 import com.tistory.project_api.dto.UserDto;
 import com.tistory.project_api.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
@@ -17,8 +16,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<UserDto> getAllUsers() {
+    private final String EP_LIST_USER = "/list";
+    private final String EP_ADD_USER = "/signup";
+
+    @GetMapping(EP_LIST_USER)
+    public List<UserDto.UserBase> getAllUsers() {
         return userService.findAll();
     }
+
+    @PostMapping(EP_ADD_USER)
+    public String addUser(@RequestBody UserRequest.SignUpRequest body) {
+        String userId = userService.SignUp(body);
+        return userId;
+    }
+
 }
