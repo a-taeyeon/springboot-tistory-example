@@ -48,6 +48,9 @@ dependencies {
 	// Spring Boot JDBC Starter
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+	// Spring Boot Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 }
 
 tasks.named('test') {

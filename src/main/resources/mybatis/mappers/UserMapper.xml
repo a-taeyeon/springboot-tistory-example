@@ -4,7 +4,7 @@
 <mapper namespace="com.tistory.project_api.mapper.UserMapper">
     <select id="findAll"
             resultType="com.tistory.project_api.dto.UserDto$UserBase">
-        SELECT id, username, password, email
+        SELECT id, username, password, email, enabled, roles
              , DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS createdAt
              , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updatedAt
         FROM user
@@ -19,7 +19,17 @@
             WHERE SUBSTRING(id, 2, 6) = DATE_FORMAT(NOW(), '%y%m%d');
         </selectKey>
 
-        INSERT INTO USER (id, username, password, email, created_at, updated_at)
-        VALUES (#{id}, #{username}, #{password}, #{email}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        INSERT INTO USER (id, username, password, email, enabled, roles, created_at, updated_at)
+        VALUES (#{id}, #{username}, #{password}, #{email}, true, 'user', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
+
+    <select id="findByEmail"
+            parameterType="com.tistory.project_api.dto.UserDto$UserSearchByEmailCondition"
+            resultType="com.tistory.project_api.dto.UserDto$UserBase">
+        SELECT id, username, password, email, enabled
+             , DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS createdAt
+             , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updatedAt
+        FROM user
+        WHERE email = #{email}
+    </select>
 </mapper>

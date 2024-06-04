@@ -15,6 +15,8 @@ public class UserDto {
         @JsonIgnore
         private String password;
         private String email;
+        private boolean enabled;
+        private char roles;
         private String createdAt;
         private String updatedAt;
     }
@@ -27,15 +29,25 @@ public class UserDto {
                       String username,
                       String password,
                       String email,
+                      boolean enabled,
+                      char roles,
                       String createdAt,
                       String updatedAt) {
             setId(id);
             setUsername(username);
             setPassword(password);
             setEmail(email);
+            setEnabled(enabled);
+            setRoles(roles);
             setCreatedAt(createdAt);
             setUpdatedAt(updatedAt);
         }
+    }
+
+    @Data
+    @Builder
+    public static class UserSearchByEmailCondition {
+        private String email;
     }
 
 }
