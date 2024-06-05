@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class UserService {
         return result;
     }
 
+    @Transactional
     public UserDto.SignUp signUp(UserRequest.SignUpRequest param) {
         // 비밀번호를 BCrypt 형식으로 인코딩
         String encodedPassword = passwordEncoder.encode(param.getPassword());

@@ -1,8 +1,11 @@
 package com.tistory.project_api.controller;
 
+import com.tistory.framework.dto.CustomUserDetails;
+import com.tistory.framework.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
 import com.tistory.project_api.dto.UserDto;
 import com.tistory.project_api.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -25,6 +29,8 @@ public class UserController {
     private final String EP_LIST_USER = "/list";
     private final String EP_ADD_USER = "/signup";
     private final String EP_LOGIN = "/login";
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -47,9 +53,11 @@ public class UserController {
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return "User " + userDetails.getUsername() + " 님 성공적으로 로그인되었습니다.";
+        String jwtToken = jwtTokenUtil.generateToken(userDetails);
+
+        return "Bearer  " + jwtToken;
     }
 
 }

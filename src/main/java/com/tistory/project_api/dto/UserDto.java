@@ -16,7 +16,7 @@ public class UserDto {
         private String password;
         private String email;
         private boolean enabled;
-        private char roles;
+        private String role;
         private String createdAt;
         private String updatedAt;
     }
@@ -30,7 +30,7 @@ public class UserDto {
                       String password,
                       String email,
                       boolean enabled,
-                      char roles,
+                      String role,
                       String createdAt,
                       String updatedAt) {
             setId(id);
@@ -38,7 +38,7 @@ public class UserDto {
             setPassword(password);
             setEmail(email);
             setEnabled(enabled);
-            setRoles(roles);
+            setRole(role);
             setCreatedAt(createdAt);
             setUpdatedAt(updatedAt);
         }
