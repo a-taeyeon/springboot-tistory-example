@@ -1,18 +1,16 @@
 package com.tistory.project_api.controller;
 
-import com.tistory.framework.dto.CustomUserDetails;
-import com.tistory.framework.utils.JwtTokenUtil;
+import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
 import com.tistory.project_api.dto.UserDto;
 import com.tistory.project_api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

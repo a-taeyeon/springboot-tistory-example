@@ -1,22 +1,18 @@
-package com.tistory.framework.service;
+package com.tistory.framework.security.service;
 
-import com.tistory.framework.dto.CustomUserDetails;
+import com.tistory.framework.security.dto.CustomUserDetails;
 import com.tistory.project_api.dto.UserDto;
 import com.tistory.project_api.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 // 사용자 정보를 데이터베이스에서 로드하고, 이를 CustomUserDetails로 변환하여 반환하는 역할
 @Service

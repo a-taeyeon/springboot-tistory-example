@@ -1,12 +1,11 @@
-package com.tistory.framework.utils;
+package com.tistory.framework.security.utils;
 
-import com.tistory.framework.dto.CustomUserDetails;
+import com.tistory.framework.security.dto.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

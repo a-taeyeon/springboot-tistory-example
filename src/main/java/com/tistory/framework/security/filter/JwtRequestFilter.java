@@ -1,8 +1,8 @@
-package com.tistory.framework.filter;
+package com.tistory.framework.security.filter;
 
-import com.tistory.framework.dto.CustomUserDetails;
-import com.tistory.framework.service.CustomUserDetailsService;
-import com.tistory.framework.utils.JwtTokenUtil;
+import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.service.CustomUserDetailsService;
+import com.tistory.framework.security.utils.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

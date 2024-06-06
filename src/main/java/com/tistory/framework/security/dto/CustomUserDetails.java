@@ -1,4 +1,4 @@
-package com.tistory.framework.dto;
+package com.tistory.framework.security.dto;
 
 import lombok.Getter;
 import lombok.ToString;
