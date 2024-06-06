@@ -4,8 +4,14 @@ import com.tistory.framework.security.dto.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +19,19 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-    // 고정된 비밀 키 사용 ( TODO: 환경변수 처리하기 )
-    private static final String SECRET_KEY = "your_very_secret_key_which_is_very_long_and_secure";
+    // secret.key 파일의 고정된 비밀 키 사용
+    @Value("${secret.key.path}")
+    private Resource secretKeyResource;
+    private String secretKey;
+
+    @PostConstruct // secret key 초기화 안전성을 위해 모든 의존성이 주입된 후 호출되도록함
+    public void init() {
+        try {
+            this.secretKey = new String(Files.readAllBytes(Paths.get(secretKeyResource.getURI())));
+        } catch (IOException e) {
+            throw new RuntimeException("secret.key 를 읽어올 수 없습니다", e);
+        }
+    }
 
     // JWT 토큰에서 이메일을 추출
     public String extractEmail(String token) {
@@ -34,7 +51,7 @@ public class JwtTokenUtil {
 
     // JWT 토큰에서 모든 클레임을 추출
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(token).getBody();
     }
 
     // JWT 토큰이 만료되었는지 확인
@@ -52,7 +69,7 @@ public class JwtTokenUtil {
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24시간 동안 유효
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes()).compact();
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes()).compact();
     }
 
     // JWT 토큰의 유효성 검증
