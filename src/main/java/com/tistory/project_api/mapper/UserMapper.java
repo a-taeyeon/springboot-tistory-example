@@ -10,4 +10,6 @@ public interface UserMapper {
     List<UserDto.UserBase> findAll();
 
     int signUp(UserDto.SignUp param);
+
+    UserDto.UserBase findByEmail(UserDto.UserSearchByEmailCondition param);
 }

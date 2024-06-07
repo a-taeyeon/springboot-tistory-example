@@ -9,4 +9,10 @@ public class UserRequest {
         private String password;
         private String email;
     }
+
+    @Data
+    public static class LoginRequest {
+        private String email;
+        private String password;
+    }
 }
