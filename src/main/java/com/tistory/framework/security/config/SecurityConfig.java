@@ -29,36 +29,30 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests -> // HTTP 요청에 대한 보안 규칙을 정의
                         authorizeRequests
-                                .requestMatchers("/user/signup", "/user/login").permitAll() // /public/** 경로에 대한 접근을 허용
+                                .requestMatchers("/user/signup", "/user/login").permitAll() // 회원가입, 로그인에 대한 접근 허용
                                 .anyRequest().authenticated() // 그 외의 모든 요청은 인증을 요구
                 )
-//                .formLogin(formLogin -> formLogin // 폼 로그인 설정을 구성
-//                        .loginPage("user/login") // 사용자 정의 로그인 페이지 경로를 설정
-//                        .permitAll() // 로그인 페이지에 대한 접근을 허용
-//                )
-//                .logout(logout -> logout // 로그아웃 설정을 구성
-//                         .permitAll() // 로그아웃 URL에 대한 접근을 허용
-//                )
-//                .cors(cors -> cors.disable()) // NOTE : 넣어야할지 안넣어야할지
 //                .httpBasic(withDefaults()) // HTTP Basic 인증 활성화 -> 주로 간단한 테스트를 위해 사용됨. JWT토큰 인증을 사용하면 없어도 됨
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
+                .cors(cors -> cors.disable()) // cors 비활성화: 외부에서 해당 애플리케이션 리소스에 접근할 수 있게 해주는 보안 기능
                 .csrf(csrf -> csrf.disable());
         return http.build(); // HTTP 보안 설정을 빌드하여 반환
     }
 
-    // 비밀번호 인코더를 정의하는 빈
+    // 비밀번호 인코더를 정의
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // BCryptPasswordEncoder를 반환. 이는 비밀번호를 암호화하는 데 사용됨
     }
 
+    // Spring Security의 인증 관리자. 사용자의 인증을 관리
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .userDetailsService(userDetailsService) // 사용자 정보를 로드
+                .passwordEncoder(passwordEncoder());    // 비밀번호 검증
         return authenticationManagerBuilder.build();
     }
 }

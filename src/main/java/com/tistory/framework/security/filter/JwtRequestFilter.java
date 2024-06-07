@@ -35,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String email = null;
         String jwt = null;
 
-        // Authorization 헤더가 존재하고 'Bearer "로 시작하는지 확인
+        // Authorization 헤더가 존재하고 'Bearer '로 시작하는지 확인
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             // 'Bearer ' 다음의 JWT 토큰 부분만 추출
             jwt = authorizationHeader.substring(7);
@@ -60,7 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-        /// 다음 필터로 요청을 전달
+        // 다음 필터(UsernamePasswordAuthenticationFilter)로 요청을 전달하여 로그인 요청 처리
         chain.doFilter(request, response);
     }
 }
