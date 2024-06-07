@@ -12,8 +12,7 @@ public class ProjectApiApplication {
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplicationBuilder(ProjectApiApplication.class).properties(
 				"spring.config.location="
-				+"classpath:/application.yml"
-				+", classpath:/config/database.yml")
+				+"classpath:/application.yml")
 				.build();
 		app.run(args);
 	}

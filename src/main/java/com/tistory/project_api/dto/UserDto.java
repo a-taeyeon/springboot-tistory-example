@@ -21,6 +21,18 @@ public class UserDto {
         private String updatedAt;
     }
 
+    @Data
+    public static class UserSocialBase {
+        private String id;
+        private String username;
+        private String email;
+        private boolean enabled;
+        private String role;
+        private String oauth2Provider;
+        private String oauth2ProviderId;
+        private String createdAt;
+        private String updatedAt;
+    }
 
     @Data
     public static class SignUp extends UserBase{
@@ -39,6 +51,30 @@ public class UserDto {
             setEmail(email);
             setEnabled(enabled);
             setRole(role);
+            setCreatedAt(createdAt);
+            setUpdatedAt(updatedAt);
+        }
+    }
+
+    @Data
+    public static class SocialSignUp extends UserSocialBase {
+        @Builder
+        public SocialSignUp(String id,
+                            String username,
+                            String email,
+                            boolean enabled,
+                            String role,
+                            String oauth2Provider,
+                            String oauth2ProviderId,
+                            String createdAt,
+                            String updatedAt) {
+            setId(id);
+            setUsername(username);
+            setEmail(email);
+            setEnabled(enabled);
+            setRole(role);
+            setOauth2Provider(oauth2Provider);
+            setOauth2ProviderId(oauth2ProviderId);
             setCreatedAt(createdAt);
             setUpdatedAt(updatedAt);
         }

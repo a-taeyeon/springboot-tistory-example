@@ -1,0 +1,16 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: profile, email
+            redirect-uri: http://localhost:8080/login/oauth2/code/google # 인증 후 사용자가 리디렉션될 URI
+        provider: # OAuth 2.0 제공자의 엔드포인트를 정의
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth # 사용자를 인증하기 위한 URI
+            token-uri: https://oauth2.googleapis.com/token # 액세스 토큰을 발급받기 위한 URI
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo # 사용자 정보를 가져오기 위한 URI
+            user-name-attribute: sub # 사용자 정보에서 사용자 이름으로 사용할 속성

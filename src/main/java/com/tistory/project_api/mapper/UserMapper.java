@@ -12,4 +12,8 @@ public interface UserMapper {
     int signUp(UserDto.SignUp param);
 
     UserDto.UserBase findByEmail(UserDto.UserSearchByEmailCondition param);
+
+
+    // oauth2 소셜 로그인 기반 회원가입
+    int socialSignUp(UserDto.SocialSignUp param);
 }
