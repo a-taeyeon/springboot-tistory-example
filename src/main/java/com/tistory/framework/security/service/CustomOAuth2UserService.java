@@ -58,9 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
 
-        log.error("@@CustomOAuth2UserService jwtToken:{}", jwtToken);
         // JWT 토큰을 사용자 정보에 추가
         return new CustomOAuth2User(oAuth2User, jwtToken);
-
     }
 }

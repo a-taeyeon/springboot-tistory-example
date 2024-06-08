@@ -42,10 +42,10 @@ public class SecurityConfig {
                 )
 //                .httpBasic(withDefaults()) // HTTP Basic 인증 활성화 -> 주로 간단한 테스트를 위해 사용됨. JWT토큰 인증을 사용하면 없어도 됨
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
-                .oauth2Login(oauth2 -> oauth2 // OAuth2
+                .oauth2Login(oauth2 -> oauth2 // OAuth2 로그인 기능 활성화
                         .userInfoEndpoint(userInfo -> userInfo // 사용자 정보 엔드포인트 설정
-                                .userService(customOAuth2UserService))
-                        .successHandler(customAuthenticationSuccessHandler)) // 사용자 서비스 설정
+                                .userService(customOAuth2UserService)) // 사용자 정보 로드,저장,업데이트
+                        .successHandler(customAuthenticationSuccessHandler)) // OAuth2 로그인 성공 후 수행 동작 정의
                 .cors(cors -> cors.disable()) // cors 비활성화: 외부에서 해당 애플리케이션 리소스에 접근할 수 있게 해주는 보안 기능
                 .csrf(csrf -> csrf.disable());
         return http.build(); // HTTP 보안 설정을 빌드하여 반환

@@ -12,7 +12,3 @@ mybatis:
 
 logging:
   config: classpath:config/logback-spring.xml
-
-secret:
-  key:
-    path: classpath:secret.key

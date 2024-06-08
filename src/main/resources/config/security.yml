@@ -14,3 +14,8 @@ spring:
             token-uri: https://oauth2.googleapis.com/token # 액세스 토큰을 발급받기 위한 URI
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo # 사용자 정보를 가져오기 위한 URI
             user-name-attribute: sub # 사용자 정보에서 사용자 이름으로 사용할 속성
+
+
+secret:
+  key:
+    path: classpath:keys/secret.key
