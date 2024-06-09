@@ -215,3 +215,4 @@ Temporary Items
 
 # SECRET KEY
 **/src/main/resources/secret.key
+**/src/main/resources/keys/

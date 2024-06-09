@@ -1,6 +1,10 @@
 spring:
   application:
     name: project-api
+  config:
+    import:
+      - config/database.yml
+      - config/security.yml
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
@@ -8,7 +12,3 @@ mybatis:
 
 logging:
   config: classpath:config/logback-spring.xml
-
-secret:
-  key:
-    path: classpath:secret.key

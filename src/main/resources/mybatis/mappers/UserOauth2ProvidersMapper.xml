@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tistory.project_api.mapper.UserOauth2ProvidersMapper">
+    <insert id="insertUserProvider"
+            parameterType="com.tistory.project_api.dto.UserOauth2ProvidersDto$AddUserOauth2Provider">
+        INSERT INTO USER_OAUTH2_PROVIDERS(email, provider, provider_id, created_at, updated_at)
+        VALUES (#{email}, #{provider}, #{providerId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+
+    <select id="findByEmailProvider"
+            parameterType="com.tistory.project_api.dto.UserOauth2ProvidersDto$UserProviderCondition"
+            resultType="com.tistory.project_api.dto.UserOauth2ProvidersDto$UserOauth2ProviderBase">
+        SELECT email, provider, created_at, updated_at
+        FROM user_oauth2_providers
+        WHERE email = #{email} AND provider = #{provider}
+    </select>
+</mapper>

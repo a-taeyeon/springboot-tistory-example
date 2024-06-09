@@ -21,6 +21,16 @@ public class UserDto {
         private String updatedAt;
     }
 
+    @Data
+    public static class UserSocialBase {
+        private String id;
+        private String username;
+        private String email;
+        private boolean enabled;
+        private String role;
+        private String createdAt;
+        private String updatedAt;
+    }
 
     @Data
     public static class SignUp extends UserBase{
