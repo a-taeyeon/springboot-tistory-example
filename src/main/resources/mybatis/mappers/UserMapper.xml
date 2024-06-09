@@ -32,17 +32,4 @@
         FROM user
         WHERE email = #{email}
     </select>
-
-    <insert id="socialSignUp"
-            parameterType="com.tistory.project_api.dto.UserDto$SocialSignUp">
-        <selectKey keyProperty="id" resultType="string" order="BEFORE">
-            SELECT CONCAT('U', DATE_FORMAT(NOW(), '%y%m%d'),
-            LPAD(CAST(COALESCE(MAX(CAST(SUBSTRING(id, 8) AS UNSIGNED)), 0) + 1 AS CHAR), 6, '0')) AS id
-            FROM user
-            WHERE SUBSTRING(id, 2, 6) = DATE_FORMAT(NOW(), '%y%m%d');
-        </selectKey>
-
-        INSERT INTO USER (id, username, email, enabled, role, oauth2_provider, oauth2_provider_id, created_at, updated_at)
-        VALUES (#{id}, #{username}, #{email}, true, 'user', #{oauth2Provider}, #{oauth2ProviderId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    </insert>
 </mapper>
