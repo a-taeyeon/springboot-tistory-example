@@ -1,10 +1,10 @@
 package com.tistory.framework.security.service;
 
-import com.tistory.framework.security.dto.CustomOAuth2User;
-import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.domain.CustomOAuth2User;
+import com.tistory.framework.security.domain.CustomUserDetails;
 import com.tistory.framework.security.utils.JwtTokenUtil;
-import com.tistory.project_api.dto.UserDto;
-import com.tistory.project_api.dto.UserOauth2ProvidersDto;
+import com.tistory.project_api.domain.User;
+import com.tistory.project_api.domain.UserOauth2Providers;
 import com.tistory.project_api.mapper.UserMapper;
 import com.tistory.project_api.mapper.UserOauth2ProvidersMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -134,7 +134,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param userAttributes the user attributes
      */
     private void processUser(UserAttributes userAttributes) {
-        UserDto.UserBase user = userMapper.findByEmail(UserDto.UserSearchByEmailCondition.builder()
+        User.UserBase user = userMapper.findByEmail(User.UserSearchByEmailCondition.builder()
                 .email(userAttributes.getEmail())
                 .build());
 
@@ -150,7 +150,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param userAttributes the user attributes
      */
     private void registerNewUser(UserAttributes userAttributes) {
-        UserDto.SignUp signUpDto = UserDto.SignUp.builder()
+        User.SignUp signUpDto = User.SignUp.builder()
                 .username(userAttributes.getName())
                 .email(userAttributes.getEmail())
                 .build();
@@ -164,8 +164,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param userAttributes the user attributes
      */
     private void checkAndAddOauthProvider(UserAttributes userAttributes) {
-        UserOauth2ProvidersDto.UserOauth2ProviderBase existUser = userOauth2ProvidersMapper.findByEmailProvider(
-                UserOauth2ProvidersDto.UserProviderCondition.builder()
+        UserOauth2Providers.UserOauth2ProviderBase existUser = userOauth2ProvidersMapper.findByEmailProvider(
+                UserOauth2Providers.UserProviderCondition.builder()
                         .email(userAttributes.getEmail())
                         .provider(userAttributes.getOauth2Provider())
                         .build());
@@ -180,7 +180,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param userAttributes the user attributes
      */
     private void addUserProvider(UserAttributes userAttributes) {
-        UserOauth2ProvidersDto.AddUserOauth2Provider providerDto = UserOauth2ProvidersDto.AddUserOauth2Provider.builder()
+        UserOauth2Providers.AddUserOauth2Provider providerDto = UserOauth2Providers.AddUserOauth2Provider.builder()
                 .email(userAttributes.getEmail())
                 .provider(userAttributes.getOauth2Provider())
                 .providerId(userAttributes.getOauth2ProviderId())

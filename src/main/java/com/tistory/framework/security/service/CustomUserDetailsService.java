@@ -1,7 +1,7 @@
 package com.tistory.framework.security.service;
 
-import com.tistory.framework.security.dto.CustomUserDetails;
-import com.tistory.project_api.dto.UserDto;
+import com.tistory.framework.security.domain.CustomUserDetails;
+import com.tistory.project_api.domain.User;
 import com.tistory.project_api.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // 데이터베이스에서 이메일을 기반으로 사용자 정보를 조회
-        UserDto.UserBase user = userMapper.findByEmail(UserDto.UserSearchByEmailCondition.builder()
+        User.UserBase user = userMapper.findByEmail(User.UserSearchByEmailCondition.builder()
                 .email(email)
                 .build());
         if(user == null){

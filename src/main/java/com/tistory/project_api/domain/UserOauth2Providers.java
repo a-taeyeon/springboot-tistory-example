@@ -1,4 +1,4 @@
-package com.tistory.project_api.dto;
+package com.tistory.project_api.domain;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserOauth2ProvidersDto {
+public class UserOauth2Providers {
 
     @Data
     public static class UserOauth2ProviderBase {

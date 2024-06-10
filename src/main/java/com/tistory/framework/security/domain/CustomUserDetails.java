@@ -1,4 +1,4 @@
-package com.tistory.framework.security.dto;
+package com.tistory.framework.security.domain;
 
 import lombok.Getter;
 import lombok.ToString;

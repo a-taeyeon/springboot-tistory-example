@@ -1,16 +1,16 @@
 package com.tistory.project_api.mapper;
 
-import com.tistory.project_api.dto.UserDto;
+import com.tistory.project_api.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    List<UserDto.UserBase> findAll();
+    List<User.UserBase> findAll();
 
-    int signUp(UserDto.SignUp param);
+    int signUp(User.SignUp param);
 
-    UserDto.UserBase findByEmail(UserDto.UserSearchByEmailCondition param);
+    User.UserBase findByEmail(User.UserSearchByEmailCondition param);
 
 }

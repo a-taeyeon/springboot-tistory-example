@@ -1,13 +1,11 @@
-package com.tistory.project_api.dto;
+package com.tistory.project_api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import java.sql.Timestamp;
-
 @NoArgsConstructor
 @Data
-public class UserDto {
+public class User {
     @Data
     public static class UserBase {
         private String id;

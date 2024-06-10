@@ -1,6 +1,6 @@
 package com.tistory.framework.security.utils;
 
-import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.domain.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

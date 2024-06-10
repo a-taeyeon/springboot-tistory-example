@@ -2,7 +2,7 @@ package com.tistory.project_api.service;
 
 import com.tistory.project_api.controller.request.UserRequest;
 import com.tistory.project_api.mapper.UserMapper;
-import com.tistory.project_api.dto.UserDto;
+import com.tistory.project_api.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +22,17 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<UserDto.UserBase> findAll() {
-        List<UserDto.UserBase> result = userMapper.findAll();
+    public List<User.UserBase> findAll() {
+        List<User.UserBase> result = userMapper.findAll();
         return result;
     }
 
     @Transactional
-    public UserDto.SignUp signUp(UserRequest.SignUpRequest param) {
+    public User.SignUp signUp(UserRequest.SignUpRequest param) {
         // 비밀번호를 BCrypt 형식으로 인코딩
         String encodedPassword = passwordEncoder.encode(param.getPassword());
 
-        UserDto.SignUp dto = UserDto.SignUp.builder()
+        User.SignUp dto = User.SignUp.builder()
                 .username(param.getUsername())
                 .password(encodedPassword)
                 .email(param.getEmail())
@@ -43,8 +43,8 @@ public class UserService {
         return dto;
     }
 
-    public UserDto.UserBase findByEmail(String email) {
-        UserDto.UserBase  dto = userMapper.findByEmail(UserDto.UserSearchByEmailCondition.builder()
+    public User.UserBase findByEmail(String email) {
+        User.UserBase  dto = userMapper.findByEmail(User.UserSearchByEmailCondition.builder()
                 .email(email)
                 .build());
 

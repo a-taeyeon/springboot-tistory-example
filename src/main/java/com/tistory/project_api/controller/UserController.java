@@ -1,9 +1,9 @@
 package com.tistory.project_api.controller;
 
-import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.domain.CustomUserDetails;
 import com.tistory.framework.security.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
-import com.tistory.project_api.dto.UserDto;
+import com.tistory.project_api.domain.User;
 import com.tistory.project_api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +35,12 @@ public class UserController {
     }
 
     @GetMapping(EP_LIST_USER)
-    public List<UserDto.UserBase> getAllUsers() {
+    public List<User.UserBase> getAllUsers() {
         return userService.findAll();
     }
 
     @PostMapping(EP_ADD_USER)
-    public UserDto.SignUp addUser(@RequestBody UserRequest.SignUpRequest body) {
+    public User.SignUp addUser(@RequestBody UserRequest.SignUpRequest body) {
         return userService.signUp(body);
     }
 

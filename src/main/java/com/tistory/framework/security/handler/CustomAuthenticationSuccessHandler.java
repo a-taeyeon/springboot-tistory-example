@@ -1,7 +1,7 @@
 package com.tistory.framework.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tistory.framework.security.dto.CustomOAuth2User;
+import com.tistory.framework.security.domain.CustomOAuth2User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

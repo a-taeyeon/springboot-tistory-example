@@ -1,6 +1,6 @@
 package com.tistory.framework.security.filter;
 
-import com.tistory.framework.security.dto.CustomUserDetails;
+import com.tistory.framework.security.domain.CustomUserDetails;
 import com.tistory.framework.security.service.CustomUserDetailsService;
 import com.tistory.framework.security.utils.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
