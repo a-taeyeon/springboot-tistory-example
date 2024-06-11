@@ -1,19 +1,24 @@
 package com.tistory.project_api.controller;
 
+import com.tistory.framework.core.response.BaseResponse;
 import com.tistory.framework.security.domain.CustomUserDetails;
 import com.tistory.framework.security.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
+import com.tistory.project_api.controller.response.UserResponse;
 import com.tistory.project_api.domain.User;
 import com.tistory.project_api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -35,8 +40,24 @@ public class UserController {
     }
 
     @GetMapping(EP_LIST_USER)
-    public List<User.UserBase> getAllUsers() {
-        return userService.findAll();
+    public BaseResponse<UserResponse.UserList> getAllUsers() {
+        BaseResponse<UserResponse.UserList> res = new BaseResponse<>();
+
+        List<User.UserBase> userListDto = userService.findAll();
+
+        if(userListDto != null){
+            UserResponse.UserList userListResponse = new UserResponse.UserList();
+            userListResponse.setTotal(userListDto.size());
+
+            ModelMapper modelMapper = new ModelMapper();
+            List<UserResponse.UserDetail> userDetails = userListDto.stream()
+                    .map(user -> modelMapper.map(user, UserResponse.UserDetail.class))
+                    .collect(Collectors.toList());
+            userListResponse.setUserList(userDetails);
+
+            res.setResult(userListResponse);
+        }
+        return res;
     }
 
     @PostMapping(EP_ADD_USER)
