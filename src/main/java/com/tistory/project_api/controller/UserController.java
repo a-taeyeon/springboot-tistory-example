@@ -6,6 +6,7 @@ import com.tistory.framework.security.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
 import com.tistory.project_api.controller.response.UserResponse;
 import com.tistory.project_api.domain.User;
+import com.tistory.project_api.domain.entity.UserEntity;
 import com.tistory.project_api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,20 +24,27 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
-    private final UserService userService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     private final String EP_LIST_USER = "/list";
     private final String EP_ADD_USER = "/signup";
     private final String EP_LOGIN = "/login";
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
-    public UserController(UserService userService) {
+    private final String EP_JPA_LIST_USER = "/list/jpa";
+    private final String EP_JPA_ADD_USER = "/signup/jpa";
+
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    public UserController(UserService userService,
+                          AuthenticationManager authenticationManager,
+                          JwtTokenUtil jwtTokenUtil) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
+
 
     @GetMapping(EP_LIST_USER)
     public BaseResponse<UserResponse.UserList> getAllUsers() {
@@ -61,8 +68,14 @@ public class UserController {
     }
 
     @PostMapping(EP_ADD_USER)
-    public User.SignUp addUser(@RequestBody UserRequest.SignUpRequest body) {
-        return userService.signUp(body);
+    public BaseResponse<UserResponse.UserDetail> addUser(@RequestBody UserRequest.SignUpRequest body) {
+        BaseResponse<UserResponse.UserDetail> res = new BaseResponse<>();
+        User.UserBase dto = userService.signUp(body);
+        if(dto != null){
+            ModelMapper modelMapper = new ModelMapper();
+            res.setResult(modelMapper.map(dto, UserResponse.UserDetail.class));
+        }
+        return res;
     }
 
     @GetMapping(EP_LOGIN)
@@ -79,4 +92,38 @@ public class UserController {
         return "Bearer  " + jwtToken;
     }
 
+    /**
+     * jpa
+     */
+    @GetMapping(EP_JPA_LIST_USER)
+    public BaseResponse<UserResponse.UserList> findAllUsers() {
+        BaseResponse<UserResponse.UserList> res = new BaseResponse<>();
+
+        List<UserEntity> findUsrs = userService.findAllUsers();
+
+        if(findUsrs != null){
+            UserResponse.UserList userListResponse = new UserResponse.UserList();
+            userListResponse.setTotal(findUsrs.size());
+
+            ModelMapper modelMapper = new ModelMapper();
+            List<UserResponse.UserDetail> userDetails = findUsrs.stream()
+                    .map(user -> modelMapper.map(user, UserResponse.UserDetail.class))
+                    .collect(Collectors.toList());
+            userListResponse.setUserList(userDetails);
+
+            res.setResult(userListResponse);
+        }
+        return res;
+    }
+
+    @PostMapping(EP_JPA_ADD_USER)
+    public BaseResponse<UserResponse.UserDetail> createUser(@RequestBody UserRequest.SignUpRequest body) {
+        BaseResponse<UserResponse.UserDetail> res = new BaseResponse<>();
+        UserResponse.UserDetail createdUser = userService.saveUser(body);
+
+        if(createdUser != null){
+            res.setResult(createdUser);
+        }
+        return res;
+    }
 }

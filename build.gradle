@@ -45,6 +45,10 @@ dependencies {
 	// MyBatis Spring Boot Starter (호환 가능한 최신 버전)
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
+	// jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
 	// Spring Boot JDBC Starter
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
@@ -63,6 +67,7 @@ dependencies {
 
 	// ModelMapper 사용
 	implementation 'org.modelmapper:modelmapper:3.1.0'
+
 
 }
 

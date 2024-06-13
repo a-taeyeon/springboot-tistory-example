@@ -1,7 +1,10 @@
 package com.tistory.framework.security.utils;
 
+import com.tistory.framework.core.response.BaseResponseCode;
+import com.tistory.framework.exception.BaseException;
 import com.tistory.framework.security.domain.CustomUserDetails;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -51,7 +54,11 @@ public class JwtTokenUtil {
 
     // JWT 토큰에서 모든 클레임을 추출
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            throw new BaseException(BaseResponseCode.VERIFY_TOKEN_HAS_EXPIRED);
+        }
     }
 
     // JWT 토큰이 만료되었는지 확인
