@@ -1,6 +1,8 @@
 package com.tistory.project_api.controller;
 
 import com.tistory.framework.core.response.BaseResponse;
+import com.tistory.framework.core.response.BaseResponseCode;
+import com.tistory.framework.exception.BaseException;
 import com.tistory.framework.security.domain.CustomUserDetails;
 import com.tistory.framework.security.utils.JwtTokenUtil;
 import com.tistory.project_api.controller.request.UserRequest;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,17 +82,33 @@ public class UserController {
     }
 
     @GetMapping(EP_LOGIN)
-    public String login(@RequestBody UserRequest.LoginRequest body) {
+    public BaseResponse<UserResponse.UserLogin> login(@RequestBody UserRequest.LoginRequest body) {
+        BaseResponse<UserResponse.UserLogin> res = new BaseResponse<>();
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
+                    new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
 
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            throw new BaseException(BaseResponseCode.DATA_NOT_FOUND);
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
 
-        return "Bearer  " + jwtToken;
+        if(jwtToken != null){
+            UserResponse.UserLogin userLogin = new UserResponse.UserLogin();
+            userLogin.setJwtToken(jwtToken);
+
+            ModelMapper modelMapper = new ModelMapper();
+            modelMapper.map(userDetails, userLogin);
+
+            res.setResult(userLogin);
+        }
+
+        return res;
     }
 
     /**

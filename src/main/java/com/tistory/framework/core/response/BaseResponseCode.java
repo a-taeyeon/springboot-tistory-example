@@ -14,8 +14,7 @@ public enum BaseResponseCode {
     REQUEST_NOT_READABLE("9103", "처리 할 수 없는 데이터 입니다."),
     INVALID_DEFINITION("9104", "데이터 처리 실패"), // JSON 등 데이터 정의 가 잘못됨
     MEDIA_TYPE_NOT_SUPPORTED("9105", "지원하지 않는 형식입니다."),
-    DATA_NOT_FOUND("9106", "조회된 데이터가 없습니다."), // 분석, 스티칭 대상 정보 조회 시 해당 id값 없는 경우
-    JSON_CONVERT_EXCEPTION("9107", "결과 json 변환에 실패했습니다"), // BDD 분석 결과 json 변환 실패
+    DATA_NOT_FOUND("9106", "조회된 데이터가 없습니다."), // 조회된 값이 없는 경우
 
 
     // SQL Exception 9200

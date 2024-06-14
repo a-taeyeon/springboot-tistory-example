@@ -41,4 +41,9 @@ public class UserResponse {
             this.updatedAt = userEntity.getUpdatedAt();
         }
     }
+
+    @Data
+    public static class UserLogin extends UserDetail{
+        private String jwtToken;
+    }
 }

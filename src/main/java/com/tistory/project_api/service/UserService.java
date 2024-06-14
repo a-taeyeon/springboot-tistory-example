@@ -54,14 +54,6 @@ public class UserService {
         return dto;
     }
 
-    public User.UserBase findByEmail(String email) {
-        User.UserBase  dto = userMapper.findByEmail(User.UserSearchByEmailCondition.builder()
-                .email(email)
-                .build());
-
-        return dto;
-    }
-
     /**
      * jpa
      */

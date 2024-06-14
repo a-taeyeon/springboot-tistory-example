@@ -29,6 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build());
         if(user == null){
             // 사용자가 없을 경우 예외처리
+            log.error("{} 이메일로 가입된 사용자가 없습니다", email);
             throw new UsernameNotFoundException(email + " 이메일로 가입된 사용자가 없습니다");
         }
 
