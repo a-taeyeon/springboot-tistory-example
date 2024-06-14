@@ -1,0 +1,13 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs # OpenAPI 문서가 제공되는 경로를 설정
+  swagger-ui:
+    path: /swagger-ui.html # Swagger UI가 제공되는 경로를 설정
+    # operationsSorter: alpha # Swagger UI에서 API 엔드포인트의 정렬 방식을 설정 (alpha, method, default)
+    defaultModelsExpandDepth: -1 # Swagger UI에서 기본적으로 모델 트리를 확장하는 깊이를 설정
+    displayRequestDuration: true # Swagger UI에서 각 요청의 지속 시간을 표시할지 여부를 설정
+    docExpansion: none # Swagger UI에서 문서의 기본 확장 상태를 설정
+    filter: true # Swagger UI에서 엔드포인트를 필터링할 수 있는 기능을 활성화
+    showExtensions: true # Swagger UI에서 각 엔드포인트의 확장 정보를 표시할지 여부를 설정
+    tagsSorter: alpha # Swagger UI에서 태그의 정렬 방식을 설정
+    theme: flattop # Swagger UI의 테마를 설정
