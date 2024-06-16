@@ -82,10 +82,10 @@ public class UserController {
     }
 
     @GetMapping(EP_LOGIN)
-    public BaseResponse<UserResponse.UserLogin> login(@RequestBody UserRequest.LoginRequest body) {
+    public BaseResponse<UserResponse.UserLogin> login(@RequestParam String email, @RequestParam String password) {
         BaseResponse<UserResponse.UserLogin> res = new BaseResponse<>();
         UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
+                    new UsernamePasswordAuthenticationToken(email, password);
 
         Authentication authentication = null;
         try {
