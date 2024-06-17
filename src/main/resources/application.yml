@@ -12,3 +12,11 @@ mybatis:
 
 logging:
   config: classpath:config/logback-spring.xml
+
+server:
+  port: 20001
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+    context-path: /

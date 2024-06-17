@@ -1,0 +1,10 @@
+${AnsiColor.BRIGHT_GREEN}            _   _     _
+           | | (_)   | |
+${AnsiColor.BRIGHT_YELLOW} /\_/\     | |_ _ ___| |_ ___  _ __ _   _      /\_/\
+( o.o )    | __| / __| __/ _ \| '__| | | |    ( o.o )
+ > ^ <     | |_| \__ \ || (_) | |  | |_| |     > ^ <
+${AnsiColor.GREEN}            \__|_|___/\__\___/|_|   \__, |
+                                     __/ |
+                                    |___/
+${AnsiColor.BRIGHT_MAGENTA}Powered by Spring Boot  ${spring-boot.version}
+${AnsiColor.BRIGHT_WHITE}

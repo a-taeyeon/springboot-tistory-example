@@ -3,6 +3,7 @@ package com.tistory.project_api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -14,6 +15,7 @@ public class ProjectApiApplication {
 				"spring.config.location="
 				+"classpath:/application.yml")
 				.build();
+		app.addListeners(new ApplicationPidFileWriter()); // pid 를 작성하는 역할을 하는 클래스 선언
 		app.run(args);
 	}
 
