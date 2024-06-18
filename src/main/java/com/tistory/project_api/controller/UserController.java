@@ -25,14 +25,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
 public class UserController {
-    private final String EP_LIST_USER = "/list";
-    private final String EP_ADD_USER = "/signup";
-    private final String EP_LOGIN = "/login";
+    private final String EP_LIST_USER = "/admin/list";
+    private final String EP_ADD_USER = "/user/signup";
+    private final String EP_LOGIN = "/user/login";
 
-    private final String EP_JPA_LIST_USER = "/list/jpa";
-    private final String EP_JPA_ADD_USER = "/signup/jpa";
+    private final String EP_JPA_LIST_USER = "/user/list/jpa";
+    private final String EP_JPA_ADD_USER = "/user/signup/jpa";
 
 
     private final UserService userService;

@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers("/user/signup", "/user/login",
                                         "/user/signup/jpa",
                                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // 회원가입, 로그인에 대한 접근 허용
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated() // 그 외의 모든 요청은 인증을 요구
                 )
 //                .httpBasic(withDefaults()) // HTTP Basic 인증 활성화 -> 주로 간단한 테스트를 위해 사용됨. JWT토큰 인증을 사용하면 없어도 됨

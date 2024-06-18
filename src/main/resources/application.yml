@@ -5,6 +5,8 @@ spring:
     import:
       - config/database.yml
       - config/security.yml
+  cache:
+    type: simple
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
