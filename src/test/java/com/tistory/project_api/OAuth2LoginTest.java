@@ -20,7 +20,7 @@ public class OAuth2LoginTest {
     @Test
     public void testOAuth2Login() throws Exception {
         mockMvc.perform(get("/oauth2/authorization/google")
-                        .with(SecurityMockMvcRequestPostProcessors.user("user").roles("USER")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("user").roles("user")))
                 .andExpect(status().is3xxRedirection());
     }
 }
