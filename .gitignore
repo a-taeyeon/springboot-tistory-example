@@ -218,3 +218,6 @@ Temporary Items
 **/src/main/resources/keys/
 
 application.pid
+
+# 환경변수 env 파일
+*.env

@@ -1,6 +1,8 @@
 spring:
   application:
     name: project-api
+  profiles:
+    active: local
   config:
     import:
       - config/database.yml
