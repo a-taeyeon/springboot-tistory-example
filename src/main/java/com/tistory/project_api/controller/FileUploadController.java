@@ -20,6 +20,8 @@ import java.util.List;
 @RequestMapping("/files/upload")
 public class FileUploadController {
     private final String EP_ADD_FILES_MULTIPART = "/multipart";
+    private final String EP_ADD_FILES_MULTIPART_ASYNC = "/multipart-async";
+
 
     @Autowired
     private FileUploadMultipartService fileUploadMultipartService;
@@ -34,5 +36,18 @@ public class FileUploadController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping(value = EP_ADD_FILES_MULTIPART_ASYNC, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BaseResponse<List<String>> uploadFileAsync(@RequestParam("files") ArrayList<MultipartFile> files) {
+        BaseResponse response = new BaseResponse();
+        for (MultipartFile file : files) {
+            try {
+                fileUploadMultipartService.uploadFileAsync(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return response;
     }
 }

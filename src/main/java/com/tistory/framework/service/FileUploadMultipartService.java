@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -147,5 +148,17 @@ public class FileUploadMultipartService {
 
 
         return thumbnailFileName;
+    }
+
+    @Async
+    public void uploadFileAsync(MultipartFile file) throws IOException {
+        // 고유한 파일 이름 생성
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+
+        File destinationFile = new File(uploadDir + File.separator + uniqueFilename);
+        file.transferTo(destinationFile);
+        log.info("Async File uploaded : {}", file.getOriginalFilename());
     }
 }
