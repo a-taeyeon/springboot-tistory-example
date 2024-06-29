@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Slf4j
 @RestController
@@ -21,6 +23,8 @@ import java.util.List;
 public class FileUploadController {
     private final String EP_ADD_FILES_MULTIPART = "/multipart";
     private final String EP_ADD_FILES_MULTIPART_ASYNC = "/multipart-async";
+    private final String EP_ADD_FILES_MULTIPART_PARALLEL = "/multipart-parallel";
+
 
 
     @Autowired
@@ -48,6 +52,23 @@ public class FileUploadController {
                 throw new RuntimeException(e);
             }
         }
+        return response;
+    }
+
+    @PostMapping(value = EP_ADD_FILES_MULTIPART_PARALLEL, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BaseResponse<List<String>> uploadFileParallel(@RequestParam("files") ArrayList<MultipartFile> files) {
+        BaseResponse response = new BaseResponse();
+
+        List<Future<String>> futures = fileUploadMultipartService.uploadFileParallel(files);
+        List<String> uploadedFiles = new ArrayList<>();
+        for(Future<String> future : futures){
+            try {
+                uploadedFiles.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        response.setResult(uploadedFiles);
         return response;
     }
 }

@@ -3,6 +3,8 @@ package com.tistory.framework.service;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * MultipartFile을 이용한 파일 업로드 구현
@@ -25,6 +28,11 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class FileUploadMultipartService {
+
+    @Autowired
+    @Qualifier("fileUploadExecutor")
+    private ExecutorService executorService;
+
     @Value("${file.upload-dir}")
     private String uploadDir;
 
@@ -32,6 +40,9 @@ public class FileUploadMultipartService {
     public static final String FILE_THUMB_DIRECTION_WIDTH = "width";
     public static final String FILE_THUMB_DIRECTION_HEIGHT = "height";
 
+    /**
+     * (방법1) ArrayList 다중 파일 업로드
+     */
     public List<String> uploadFiles(ArrayList<MultipartFile> files) throws IOException {
 
         List<String> uploadedFileNames = new ArrayList<>();
@@ -44,15 +55,13 @@ public class FileUploadMultipartService {
 
         for (MultipartFile file : files) {
             // 고유한 파일 이름 생성
-            String originalFilename = file.getOriginalFilename();
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+            String uniqueFilename = generateUniqueName(file).get("uniqueFilename");
 
             // 파일 저장
             Path filePath = uploadPath.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), filePath);
 
-            if(isImageFile(fileExtension)) {
+            if(isImageFile(generateUniqueName(file).get("fileExtension"))) {
                 // 파일이 이미지인 경우 썸네일 생성
                 File savedFile = filePath.toFile();
                 String thumbnailFilename = generateThumbnail(savedFile, uploadPath.toString(), uniqueFilename, 500, FILE_THUMB_DIRECTION_HEIGHT);
@@ -64,20 +73,69 @@ public class FileUploadMultipartService {
         return uploadedFileNames;
     }
 
+    /**
+     * (방법2) 비동기 파일 업로드
+     */
+    @Async
+    public void uploadFileAsync(MultipartFile file) throws IOException {
+        // 고유한 파일 이름 생성
+        String uniqueFilename = generateUniqueName(file).get("uniqueFileName");
+
+        File destinationFile = new File(uploadDir + File.separator + uniqueFilename);
+        file.transferTo(destinationFile);
+
+        log.info("Async File uploaded : {}", file.getOriginalFilename());
+    }
+
+    /**
+     * (방법3) 병렬 파일 업로드
+     */
+    public List<Future<String>> uploadFileParallel(ArrayList<MultipartFile> files) {
+        List<Future<String>> futures = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            Future<String> future = executorService.submit(() -> {
+                String uniqueFilename = generateUniqueName(file).get("uniqueFilename");
+                Path filePath = Paths.get(uploadDir + "/" + uniqueFilename);
+
+                try {
+                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                    return uniqueFilename;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("파일 병렬 업로드 실패", e);
+                }
+            });
+            futures.add(future);
+        }
+        return futures;
+    }
+
+
+    /**
+     * 고유한 파일 이름 생성
+     */
+    private Map<String, String> generateUniqueName(MultipartFile file) {
+        Map<String, String> map = new HashMap<>();
+
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+
+        map.put("fileExtension", fileExtension);
+        map.put("uniqueFilename", uniqueFilename);
+
+        log.error("@@@@map:" + map.get("uniqueFilename"));
+        return map;
+    }
+
     private boolean isImageFile(String fileExtension) {
         String lowerCaseExtension = fileExtension.toLowerCase();
         return lowerCaseExtension.equals(".jpg") || lowerCaseExtension.equals(".jpeg") || lowerCaseExtension.equals(".png") || lowerCaseExtension.equals(".gif");
     }
 
     /**
-     *
-     * @param file 썸네일 만들 대상 이비지
-     * @param filePath 파일 저장 경로
-     * @param fileName 파일명
-     * @param thumbBaseSize - 썸네일은 만들때 가로/세로 기준의 사이즈
-     * @param thumbDirection - 썸네일 만들때 사이즈 기준 방향 (width, height) FILE_THUMB_DIRECTION_WIDTH, FILE_THUMB_DIRECTION_HEIGHT
-     * @return
-     * @throws IOException
+     * Thumbnail 생성
      */
     public String generateThumbnail(File file, String filePath, String fileName, int thumbBaseSize, String thumbDirection) throws IOException {
         // 확장자
@@ -150,15 +208,4 @@ public class FileUploadMultipartService {
         return thumbnailFileName;
     }
 
-    @Async
-    public void uploadFileAsync(MultipartFile file) throws IOException {
-        // 고유한 파일 이름 생성
-        String originalFilename = file.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
-
-        File destinationFile = new File(uploadDir + File.separator + uniqueFilename);
-        file.transferTo(destinationFile);
-        log.info("Async File uploaded : {}", file.getOriginalFilename());
-    }
 }
