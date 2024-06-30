@@ -79,7 +79,7 @@ public class FileUploadMultipartService {
     @Async
     public void uploadFileAsync(MultipartFile file) throws IOException {
         // 고유한 파일 이름 생성
-        String uniqueFilename = generateUniqueName(file).get("uniqueFileName");
+        String uniqueFilename = generateUniqueName(file).get("uniqueFilename");
 
         File destinationFile = new File(uploadDir + File.separator + uniqueFilename);
         file.transferTo(destinationFile);
@@ -125,7 +125,6 @@ public class FileUploadMultipartService {
         map.put("fileExtension", fileExtension);
         map.put("uniqueFilename", uniqueFilename);
 
-        log.error("@@@@map:" + map.get("uniqueFilename"));
         return map;
     }
 
