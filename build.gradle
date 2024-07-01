@@ -72,7 +72,11 @@ dependencies {
 	// .env 파일을 로드
 	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 
+	// Image Thumbnail
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'    /* thumbnailator */
 
+	// Apache common io
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 }
 
 tasks.named('test') {

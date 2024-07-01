@@ -72,8 +72,8 @@ public class BaseExceptionHandler extends RuntimeException {
         }
 
         BaseResponse res = new BaseResponse();
-        res.setCode(BaseResponseCode.FAIL.getCode());
-        res.setMessage(BaseResponseCode.FAIL.getMessage());
+        res.setCode(e.getClass().getSimpleName());
+        res.setMessage(e.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -1,4 +1,4 @@
-package com.tistory.framework.core;
+package com.tistory.framework.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;

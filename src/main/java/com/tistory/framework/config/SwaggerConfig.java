@@ -1,4 +1,4 @@
-package com.tistory.framework.docs;
+package com.tistory.framework.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

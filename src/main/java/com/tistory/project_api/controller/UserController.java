@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @GetMapping(EP_LOGIN)
-    public BaseResponse<UserResponse.UserLogin> login(@RequestParam String email, @RequestParam String password) {
+    public BaseResponse<UserResponse.UserLogin> login(@RequestParam(defaultValue = "test1@example.com") String email, @RequestParam(defaultValue = "test1pw") String password) {
         BaseResponse<UserResponse.UserLogin> res = new BaseResponse<>();
         UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(email, password);
