@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class FilesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String fileName;
     private String fileType;
     private long fileSize;

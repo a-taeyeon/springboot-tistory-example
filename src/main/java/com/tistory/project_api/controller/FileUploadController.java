@@ -7,15 +7,13 @@ import com.tistory.project_api.service.FilesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -27,18 +25,18 @@ public class FileUploadController {
     private final String EP_ADD_FILES_MULTIPART_ASYNC = "/multipart-async";
     private final String EP_ADD_FILES_MULTIPART_PARALLEL = "/multipart-parallel";
 
-
-
     @Autowired
     private FileUploadMultipartService fileUploadMultipartService;
     @Autowired
     FilesService filesService;
 
+    /**
+     * 단순 Multipart
+     */
     @PostMapping(value = EP_ADD_FILES_MULTIPART, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BaseResponse<List<String>> uploadFile(@RequestParam("files") ArrayList<MultipartFile> files) {
+    public BaseResponse uploadFile(@RequestParam("files") ArrayList<MultipartFile> files) {
         BaseResponse response = new BaseResponse();
         try {
-//            List<FilesEntity> uploadedFiles = fileUploadMultipartService.uploadFiles(files);
             List<FilesEntity> uploadedFiles = filesService.saveFiles(files);
 
             response.setResult(uploadedFiles);
@@ -48,6 +46,32 @@ public class FileUploadController {
         }
     }
 
+    @GetMapping(value = EP_ADD_FILES_MULTIPART + "/all")
+    public BaseResponse getAllFiles() {
+        BaseResponse response = new BaseResponse();
+        List<FilesEntity> uploadedFiles = filesService.getAllFiles();
+        response.setResult(uploadedFiles);
+        return response;
+    }
+
+    @GetMapping(value = EP_ADD_FILES_MULTIPART)
+    public BaseResponse getFiles(@RequestParam("id") Long id) {
+        BaseResponse response = new BaseResponse();
+        Optional<FilesEntity> fileInfo = filesService.getFileById(id);
+        response.setResult(fileInfo);
+        return response;
+    }
+
+    @DeleteMapping(value = EP_ADD_FILES_MULTIPART)
+    public BaseResponse deleteFiles(@RequestParam("ids") List<Long> id) {
+        BaseResponse response = new BaseResponse();
+        filesService.deleteFile(id);
+        return response;
+    }
+
+    /**
+     * 비동기 Async
+     */
     @PostMapping(value = EP_ADD_FILES_MULTIPART_ASYNC, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<List<String>> uploadFileAsync(@RequestParam("files") ArrayList<MultipartFile> files) {
         BaseResponse response = new BaseResponse();
@@ -61,6 +85,9 @@ public class FileUploadController {
         return response;
     }
 
+    /**
+     * 병렬 Parallel
+     */
     @PostMapping(value = EP_ADD_FILES_MULTIPART_PARALLEL, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<List<String>> uploadFileParallel(@RequestParam("files") ArrayList<MultipartFile> files) {
         BaseResponse response = new BaseResponse();
