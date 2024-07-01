@@ -1,5 +1,6 @@
 package com.tistory.framework.service;
 
+import com.tistory.project_api.domain.entity.FilesEntity;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
@@ -43,9 +44,10 @@ public class FileUploadMultipartService {
     /**
      * (방법1) ArrayList 다중 파일 업로드
      */
-    public List<String> uploadFiles(ArrayList<MultipartFile> files) throws IOException {
+    public List<FilesEntity> uploadFiles(ArrayList<MultipartFile> files) throws IOException {
 
         List<String> uploadedFileNames = new ArrayList<>();
+        List<FilesEntity> uploadedFiles = new ArrayList<>();
 
         // 업로드 디렉터리가 없으면 생성
         Path uploadPath = Paths.get(uploadDir);
@@ -54,6 +56,7 @@ public class FileUploadMultipartService {
         }
 
         for (MultipartFile file : files) {
+
             // 고유한 파일 이름 생성
             String uniqueFilename = generateUniqueName(file).get("uniqueFilename");
 
@@ -68,9 +71,11 @@ public class FileUploadMultipartService {
             }
 
             uploadedFileNames.add(uniqueFilename);
+            FilesEntity filesEntity = new FilesEntity(uniqueFilename, file.getContentType(), file.getSize(), filePath.toString(), file.getOriginalFilename());
+            uploadedFiles.add(filesEntity);
         }
 
-        return uploadedFileNames;
+        return uploadedFiles;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.tistory.project_api.controller;
 
 import com.tistory.framework.core.response.BaseResponse;
 import com.tistory.framework.service.FileUploadMultipartService;
+import com.tistory.project_api.domain.entity.FilesEntity;
+import com.tistory.project_api.service.FilesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,13 +31,17 @@ public class FileUploadController {
 
     @Autowired
     private FileUploadMultipartService fileUploadMultipartService;
+    @Autowired
+    FilesService filesService;
 
     @PostMapping(value = EP_ADD_FILES_MULTIPART, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<List<String>> uploadFile(@RequestParam("files") ArrayList<MultipartFile> files) {
         BaseResponse response = new BaseResponse();
         try {
-            List<String> fileNames = fileUploadMultipartService.uploadFiles(files);
-            response.setResult(fileNames);
+//            List<FilesEntity> uploadedFiles = fileUploadMultipartService.uploadFiles(files);
+            List<FilesEntity> uploadedFiles = filesService.saveFiles(files);
+
+            response.setResult(uploadedFiles);
             return response;
         } catch (IOException e) {
             throw new RuntimeException(e);
