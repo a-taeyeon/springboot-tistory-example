@@ -7,6 +7,7 @@ spring:
     import:
       - config/database.yml
       - config/security.yml
+      - config/fileupload.yml
   cache:
     type: simple
 
